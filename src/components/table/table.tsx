@@ -7,8 +7,8 @@ export interface TableRow {
 interface TableProps {
   columns: string[];
   data: any;
-  handlerEdit: (data: ICourse) => void;
-  handlerDelete: (data: ICourse) => void;
+  handlerEdit: (data: any) => void;
+  handlerDelete: (data: any) => void;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -49,7 +49,7 @@ const Table: React.FC<TableProps> = ({
                     <span className="inline-block w-1/3 md:hidden font-bold">
                       {column}
                     </span>
-                    {row[column.toLowerCase()]}
+                    {row[column]}
                   </td>
                 ))}
                 <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">

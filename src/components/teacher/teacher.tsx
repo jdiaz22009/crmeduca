@@ -1,25 +1,24 @@
 'use client';
-
-import {getAllCoruses} from '@/providers/client/course';
 import {useEffect, useState} from 'react';
 import Table from '../table/table';
-import {ICourse} from '@/types';
-import UaserModal from '../modal/users/user';
+import {ITeacher} from '@/types';
+import TeacherModal from '../modal/teacher/teacher';
+import {getAllTeachers} from '@/providers/client/teacher';
 
 const TeacherComponent = () => {
-  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [teacher, setTeacher] = useState<ITeacher[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
-  const [dataEdit, setDataEdit] = useState<ICourse | null>();
+  const [dataEdit, setDataEdit] = useState<ITeacher | null>();
   const [type, setType] = useState<'delete' | 'insert' | 'update'>();
 
   useEffect(() => {
-    getAllCourse();
+    getAllTeacher();
   }, []);
 
-  const getAllCourse = async () => {
+  const getAllTeacher = async () => {
     try {
-      const data = await getAllCoruses();
-      setCourses(data);
+      const data = await getAllTeachers();
+      setTeacher(data);
     } catch (error) {
       console.error(error);
     }
@@ -28,7 +27,7 @@ const TeacherComponent = () => {
   const onAdd = () => {
     setVisible(false);
     setTimeout(() => {
-      getAllCourse();
+      getAllTeacher();
     }, 500);
   };
 
@@ -38,13 +37,13 @@ const TeacherComponent = () => {
     setDataEdit(null);
   };
 
-  const handlerEdit = (data: ICourse) => {
+  const handlerEdit = (data: ITeacher) => {
     handlerModal();
     setDataEdit(data);
     setType('update');
   };
 
-  const handlerDelete = (data: ICourse) => {
+  const handlerDelete = (data: ITeacher) => {
     handlerModal();
     setDataEdit(data);
     setType('delete');
@@ -65,16 +64,18 @@ const TeacherComponent = () => {
       </div>
 
       <Table
-        columns={['uuid', 'title', 'description', 'status']}
-        data={courses}
+        columns={['uuid', 'fullName', 'phone', 'status']}
+        data={teacher}
         handlerEdit={handlerEdit}
         handlerDelete={handlerDelete}
       />
       {visible && (
-        <UaserModal
+        <TeacherModal
           onClose={handlerModal}
           onAdd={onAdd}
-          data={dataEdit ? dataEdit : {title: '', description: ''}}
+          data={
+            dataEdit ? dataEdit : {fullName: '', phone: '', numberDocument: ''}
+          }
           type={type}
         />
       )}

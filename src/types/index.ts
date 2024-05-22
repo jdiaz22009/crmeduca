@@ -10,10 +10,17 @@ export interface IUser {
 }
 
 export interface ICourse {
-  uuid?: string;
-  status?: string;
   title: string;
   description: string;
+  uuid?: string;
+  status?: string;
+}
+export interface ITeacher {
+  fullName: string;
+  phone: string;
+  numberDocument: string;
+  uuid?: string;
+  status?: string;
 }
 
 export enum Status {
