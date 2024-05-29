@@ -1,5 +1,9 @@
 'use client';
 import {useEffect, useState} from 'react';
+
+import * as XLSX from 'xlsx';
+import {saveAs} from 'file-saver';
+
 import Table from '../table/table';
 import {ITeacher} from '@/types';
 import TeacherModal from '../modal/teacher/teacher';
@@ -49,17 +53,34 @@ const TeacherComponent = () => {
     setType('delete');
   };
 
+  const generateExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(teacher);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Reporte');
+
+    const excelBuffer = XLSX.write(workbook, {bookType: 'xlsx', type: 'array'});
+
+    const blob = new Blob([excelBuffer], {type: 'application/octet-stream'});
+    saveAs(blob, 'reporte.xlsx');
+  };
+
   return (
     <>
       <span className="text-5xl">
         Listado de <small className="text-indigo-500">Docentes</small>
       </span>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-5 mb-4">
         <button
           onClick={handlerModal}
           className="p-11  mt-10 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-1   border border-indigo-500 rounded">
           Añadir
+        </button>
+        <button
+          onClick={generateExcel}
+          className="p-11  mt-10 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-1   border border-indigo-500 rounded">
+          Exportar a Excel
         </button>
       </div>
 

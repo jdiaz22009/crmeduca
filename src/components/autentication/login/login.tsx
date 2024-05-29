@@ -86,7 +86,7 @@ const LoginForm = () => {
         </div>
 
         <div className="mt-6">
-          <div className="flex justify-between mb-2">
+          {/* <div className="flex justify-between mb-2">
             <label htmlFor="password" className="text-sm text-gray-600">
               Contraseña
             </label>
@@ -95,7 +95,7 @@ const LoginForm = () => {
               className="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline">
               Olvidaste tu contraseña?
             </a>
-          </div>
+          </div> */}
 
           <input
             type="password"

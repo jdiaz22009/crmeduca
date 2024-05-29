@@ -1,9 +1,13 @@
 'use client';
 
-import {getAllCoruses} from '@/providers/client/course';
 import {useEffect, useState} from 'react';
-import Table from '../table/table';
+
+import * as XLSX from 'xlsx';
+import {saveAs} from 'file-saver';
+
 import {ICourse} from '@/types';
+import {getAllCoruses} from '@/providers/client/course';
+import Table from '../table/table';
 import UaserModal from '../modal/users/user';
 
 const CourseComponent = () => {
@@ -50,17 +54,34 @@ const CourseComponent = () => {
     setType('delete');
   };
 
+  const generateExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(courses);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Reporte');
+
+    const excelBuffer = XLSX.write(workbook, {bookType: 'xlsx', type: 'array'});
+
+    const blob = new Blob([excelBuffer], {type: 'application/octet-stream'});
+    saveAs(blob, 'reporte.xlsx');
+  };
+
   return (
     <>
       <span className="text-5xl">
         Listado de <small className="text-indigo-500">Cursos</small>
       </span>
 
-      <div className="flex justify-end">
+      <div className="flex flex-row justify-end gap-5 mb-4">
         <button
           onClick={handlerModal}
           className="p-11  mt-10 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-1   border border-indigo-500 rounded">
           Añadir
+        </button>
+        <button
+          onClick={generateExcel}
+          className="p-11  mt-10 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-1   border border-indigo-500 rounded">
+          Exportar a Excel
         </button>
       </div>
 
